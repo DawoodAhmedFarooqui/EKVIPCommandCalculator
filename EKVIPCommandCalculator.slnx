@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="EKVIPCommandCalculator.Tests/EKVIPCommandCalculator.Tests.csproj" />
+  <Project Path="EKVIPCommandCalculator/EKVIPCommandCalculator.csproj" />
+</Solution>

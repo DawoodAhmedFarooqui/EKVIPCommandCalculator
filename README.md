@@ -15,11 +15,11 @@ undo      -> 3
 
 ## How to run
 
-Need .NET SDK 8 or newer
+Need .NET SDK 10 or newer
 
 ```bash
 cd EKVIPCommandCalculator
-dotnet run -- 1
+dotnet run --project EKVIPCommandCalculator -- 1
 ```
 
 The number after `--` is the start value. If no number is given, it starts with 1.
@@ -32,18 +32,45 @@ The number after `--` is the start value. If no number is given, it starts with 
 - Performed commands are pushed on a stack. `undo` pops the last one and calls its `Undo`.
 - `randadd` remembers the number it added, so undo can subtract exactly that number.
 
+## Tests
+
+Unit tests are written with xUnit in the `EKVIPCommandCalculator.Tests` project.
+
+- `IncrementTests`, `DecrementTests`, `DoubleTests` - each command and its undo, also having with negative values
+- `RandAddTests` - value always changes, added number is between -4 and 4 and never 0, undo always gives back the exact value, multiple randadd commands are undone one by one
+- `UndoTests` - undo with empty history keeps the value, undo reverts the last command
+- `CommandFactoryTests` - factory returns the right command, unknown command returns null
+- `CommandWorkflowTests` - the example from the task (2, 3, 4, 8, 4, 3) and the same flow with randadd in between
+
 ## Project structure
 
 ```
 EKVIPCommandCalculator/
-├── Commands/           ICommand + one class per command as mentioned in the requirement
-├── CommandFactory.cs
-├── CommandNames.cs
-├── Program.cs
-└── EKVIPCommandCalculator.csproj
+├── EKVIPCommandCalculator.slnx
+├── README.md
+├── EKVIPCommandCalculator/                 console application
+│   ├── Commands/                           one class per command as mentioned in the requirement
+│   │   ├── Contracts/
+│   │   │   └── ICommand.cs
+│   │   ├── DecrementCommand.cs
+│   │   ├── DoubleCommand.cs
+│   │   ├── IncrementCommand.cs
+│   │   ├── RandAddCommand.cs
+│   │   └── UndoCommand.cs
+│   ├── CommandFactory.cs
+│   ├── CommandNames.cs
+│   ├── Program.cs
+│   └── EKVIPCommandCalculator.csproj
+└── EKVIPCommandCalculator.Tests/           unit tests (xUnit)
+    ├── CommandFactoryTests.cs
+    ├── CommandWorkflowTests.cs
+    ├── DecrementTests.cs
+    ├── DoubleTests.cs
+    ├── IncrementTests.cs
+    ├── RandAddTests.cs
+    ├── UndoTests.cs
+    └── EKVIPCommandCalculator.Tests.csproj
 ```
-
-## Assumptions
 
 ## Assumptions
 
